@@ -1,0 +1,64 @@
+#!/bin/bash
+
+BASE_DIR=$(pwd)
+
+echo " Для выхода вводите \"n\" \n"
+
+read -p " Введите название проекта: " proj
+
+if [[ "$proj" =~ ^[nN]$ ]]; then
+       echo " Выход "
+       exit
+else
+
+virtualenv /opt/projects/$proj
+source /opt/projects/$proj/bin/activate
+python -m pip install --upgrade pip
+pip install -r $BASE_DIR/requirements1.txt
+
+cd /opt/projects/$proj
+coderedcms start $proj
+cd $BASE_DIR
+mkdir /opt/projects/$proj/$proj/media
+mkdir /opt/projects/$proj/$proj/deployment
+cp $BASE_DIR/yesanswer /opt/projects/$proj/$proj/.
+
+# СОЗДАНИЕ ПРИЛОЖЕНИЯ ДЛЯ КАСТОМНЫХ МОДУЛЕЙ И НАСТРОЙКА ИХ
+
+cd /opt/projects/$proj/$proj/
+python manage.py startapp modwebpage
+cp $BASE_DIR/clear/clear/modwebpage/models.py /opt/projects/$proj/$proj/modwebpage/.
+cp $BASE_DIR/clear/clear/modwebpage/blocks.py /opt/projects/$proj/$proj/modwebpage/.
+cp -r $BASE_DIR/clear/clear/modwebpage/templates /opt/projects/$proj/$proj/modwebpage/.
+
+# НАСТРОЙКА ШАБЛОНОВ И СТИЛЕЙ СТРАНИЦ И КАСТОМНЫХ БЛОКОВ
+
+cp $BASE_DIR/clear/clear/website/templates/coderedcms/pages/base.html /opt/projects/$proj/$proj/website/templates/coderedcms/pages/.
+cp $BASE_DIR/clear/clear/website/static/website/css/genstyle.css /opt/projects/$proj/$proj/website/static/website/css/.
+cp $BASE_DIR/clear/clear/website/static/website/css/scroll_style.css /opt/projects/$proj/$proj/website/static/website/css/.
+cp $BASE_DIR/clear/clear/website/static/website/css/choise_style.css /opt/projects/$proj/$proj/website/static/website/css/.
+cp -r $BASE_DIR/clear/lib/python3.8/site-packages/coderedcms/templates /opt/projects/$proj/lib/python3.8/site-packages/coderedcms/.
+python manage.py collectstatic
+
+cd $BASE_DIR
+
+# НАСТРОЙКА UWSGI-vassals ПРОЕКТА
+
+cp $BASE_DIR/clear/clear/deployment/uwsgi_params /opt/projects/$proj/$proj/deployment/.
+python $BASE_DIR/uwsgi_settings.py $proj
+
+# НАСТРОЙКА ALLOWED_HOSTS
+
+python $BASE_DIR/allowed.py $proj
+
+# НАСТРОЙКА NGINX
+
+python $BASE_DIR/nginx_repack.py $proj
+
+# СОЗДАНИЕ БАЗЫ ДАННЫХ И ПРИВЯЗКА ЕЕ К ПРОЕКТУ
+
+command_psql="psql -c \"create database $proj owner 'evgen';\""
+su - postgres -c "$command_psql"
+python $BASE_DIR/base_repack.py $proj
+
+fi

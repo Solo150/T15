@@ -12,7 +12,7 @@ start_prod = []
 dev_result = []
 prod_result = []
 
-with open(BASE_PATH + f'/{p_name}_domens.txt', 'r') as domens_txt:
+with open(BASE_PATH + f'/domens/{p_name}_domens.txt', 'r') as domens_txt:
     domens = domens_txt.readlines()
 
 # СОСТАВЛЕНИЕ ЧАСТЕЙ dev.py + домены

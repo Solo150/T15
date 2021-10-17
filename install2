@@ -41,8 +41,8 @@ cp -r $BASE_DIR/clear/lib/python3.8/site-packages/coderedcms/templates /opt/proj
 python manage.py collectstatic
 
 cd $BASE_DIR
-echo "\# Впишите ниже необходимые домены для установки в ${proj}-проект" > ${proj}_domens.txt
-nano ${proj}_domens.txt
+echo "\# Впишите ниже необходимые домены для установки в ${proj}-проект" > domens/${proj}_domens.txt
+nano domens/${proj}_domens.txt
 python rm_first_line.py $proj
 
 # НАСТРОЙКА UWSGI-vassals ПРОЕКТА

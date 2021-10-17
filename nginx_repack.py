@@ -12,7 +12,7 @@ NGINX_PATH = '/etc/nginx/sites-enabled'
 os.system('systemctl stop nginx.service')
 p_name = sys.argv[1]
 
-with open(BASE_PATH + f'/{p_name}_domens.txt', 'r') as domens,\
+with open(BASE_PATH + f'/domens/{p_name}_domens.txt', 'r') as domens,\
     open(NGINX_PATH + r'/default', 'r') as conf_file:
     domens = domens.readlines()
     finish_row = conf_file.readline()
@@ -21,7 +21,7 @@ with open(BASE_PATH + f'/{p_name}_domens.txt', 'r') as domens,\
         finish_row = conf_file.readline()
     finish_path = conf_file.readlines()
 
-    with open(BASE_PATH + r'/template.txt', 'r') as nginx_temp:
+    with open(BASE_PATH + r'/templates/template.txt', 'r') as nginx_temp:
         nginx_temp = nginx_temp.read()
         for domen in domens:
             domen = domen.strip()
@@ -35,8 +35,3 @@ with open(NGINX_PATH + r'/default', 'w') as conf_file:
 
 os.system('systemctl start nginx.service')
 
-"""
-    1) Нужно создать ветвление, чтобы при отсутствии файла nginx в sites-enabled
-    этот файл создавался по шаблону.
-    2) Создать отдельную папку для всех шаблонов.
-"""

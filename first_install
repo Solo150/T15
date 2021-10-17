@@ -15,6 +15,7 @@ systemctl start emperor.uwsgi.service
 pip3 install virtualenv psycopg2 uwsgi
 mkdir /etc/uwsgi
 mkdir /etc/uwsgi/vassals
+mkdir /var/log/uwsgi
 
 command_psql="psql -c \"create user evgen;\""
 su - postgres -c "$command_psql"

@@ -15,5 +15,7 @@ python3 delete_project.py $proj
 command_psql="psql -c \"drop database $proj;\""
 su - postgres -c "$command_psql"
 rm /etc/uwsgi/vassals/${proj}_uwsgi.ini
+rm /var/log/uwsgi/${proj}.log
 systemctl restart nginx.service
 systemctl restart emperor.uwsgi.service
+fi

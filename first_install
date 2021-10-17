@@ -1,0 +1,17 @@
+#!/bin/bash
+
+apt-get update && apt-get upgrade
+apt-get install libpq-dev postgresql postgresql-contrib nginx python3-pip
+apt install snapd
+snap install core
+snap refresh core
+snap install --classic certbot
+ln -s /snap/bin/certbot /usr/bin/certbot
+cp emperor.uwsgi.service /etc/systemd/system/.
+/etc/init.d/nginx start
+systemctl enable emperor.uwsgi.service
+systemctl enable nginx.service
+systemctl start emperor.uwsgi.service
+pip3 install virtualenv psycopg2 uwsgi
+
+cat temp_default.txt > /etc/nginx/sites-enabled/default

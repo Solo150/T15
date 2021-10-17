@@ -44,7 +44,7 @@ cd $BASE_DIR
 
 # НАСТРОЙКА UWSGI-vassals ПРОЕКТА
 
-cp $BASE_DIR/clear/clear/deployment/uwsgi_params /opt/projects/$proj/$proj/deployment/.
+cp $BASE_DIR/uwsgi_params /opt/projects/$proj/$proj/deployment/.
 python $BASE_DIR/uwsgi_settings.py $proj
 
 # НАСТРОЙКА ALLOWED_HOSTS

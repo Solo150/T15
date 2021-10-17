@@ -1,13 +1,13 @@
-import sys
+import sys, os
 
-"""
-    Сменить путь до файла в соответствии с ОС
-"""
-
-with open('domens\\' + sys.argv[1] + '_domens.txt', 'r') as domens:
+patterns = []
+conf_default = '/etc/nginx/sites-enabled/default'
+with open('domens/' + sys.argv[1] + '_domens.txt', 'r') as domens:
     domens = domens.readlines()
     for domen in domens:
-        print('# ' + sys.argv[1] + '1' + domen.strip() + '1')
+        pattern1 = '# ' + sys.argv[1] + '1' + domen.strip() + '1'
+        pattern2 = '# ' + sys.argv[1] + '2' + domen.strip() + '2'
+        patterns.append([pattern1, pattern2])
 
-with open(sys.argv[1] + '_domens.txt', 'r') as conf_file:
-    pass
+for pattern in patterns:
+    os.system(f'sed -i \"/{pattern[0]}/{pattern[1]}/d\" {conf_default}')

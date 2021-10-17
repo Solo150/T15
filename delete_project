@@ -10,3 +10,10 @@ if [[ "$proj" =~ ^[nN]$ ]]; then
 else
 
 rm -r /opt/projects/$proj
+python3 delete_project.py $proj
+
+command_psql="psql -c \"drop database $proj;\""
+su - postgres -c "$command_psql"
+rm /etc/uwsgi/vassals/${proj}_uwsgi.ini
+systemctl restart nginx.service
+systemctl restart emperor.uwsgi.service

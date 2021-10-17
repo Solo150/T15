@@ -7,11 +7,16 @@ snap install core
 snap refresh core
 snap install --classic certbot
 ln -s /snap/bin/certbot /usr/bin/certbot
-cp emperor.uwsgi.service /etc/systemd/system/.
+cp Full_install/emperor.uwsgi.service /etc/systemd/system/.
 /etc/init.d/nginx start
 systemctl enable emperor.uwsgi.service
 systemctl enable nginx.service
 systemctl start emperor.uwsgi.service
 pip3 install virtualenv psycopg2 uwsgi
 
+command_psql="psql -c \"create user evgen;\""
+su - postgres -c "$command_psql"
+
 cat temp_default.txt > /etc/nginx/sites-enabled/default
+
+echo "colorscheme blue" > ~/vimrc

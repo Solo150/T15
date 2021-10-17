@@ -13,7 +13,7 @@ os.system('systemctl stop nginx.service')
 p_name = sys.argv[1]
 
 with open(BASE_PATH + f'/{p_name}_domens.txt', 'r') as domens,\
-    open(NGINX_PATH + r'/RestMO1_nginx.conf', 'r') as conf_file:
+    open(NGINX_PATH + r'/default', 'r') as conf_file:
     domens = domens.readlines()
     finish_row = conf_file.readline()
     while finish_row != '# block_base_conf_finish\n':

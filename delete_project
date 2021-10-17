@@ -1,0 +1,12 @@
+#!/bin/bash
+
+BASE_DIR=$(pwd)
+
+read -p "Введите название проекта: " proj
+
+if [[ "$proj" =~ ^[nN]$ ]]; then
+       echo " Выход "
+       exit
+else
+
+rm -r /opt/projects/$proj

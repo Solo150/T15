@@ -34,7 +34,7 @@ with open(SETTINGS_PATH + '/prod.py', 'r') as prod:
 
 with open(SETTINGS_PATH + '/dev.py', 'w') as dev:
     if allow_host_dev.strip() == TEMP1:
-        dev.write(''.join(start_dev) + 'ALLOWED_HOSTS = [\n' + '\n' + d_name\
+        dev.write(''.join(start_dev) + 'ALLOWED_HOSTS = [\n' + d_name\
               + '\n]\n' + ''.join(finish_dev))
     elif allow_host_dev.strip() == TEMP2:
         dev.write(''.join(start_dev) + 'ALLOWED_HOSTS = [\n' + d_name + '\n'\
@@ -44,8 +44,8 @@ with open(SETTINGS_PATH + '/dev.py', 'w') as dev:
 
 with open(SETTINGS_PATH + '/prod.py', 'w') as prod:
     if allow_host_prod.strip() == TEMP3:
-        prod.write(''.join(start_prod) + 'ALLOWED_HOSTS = [\n' + '\n' + d_name\
+        prod.write(''.join(start_prod) + 'ALLOWED_HOSTS = [\n' + d_name\
               + '\n]\n' + ''.join(finish_prod))
     elif allow_host_prod.strip() == TEMP2:
-        prod.write(''.join(start_prod) + 'ALLOWED_HOSTS = [\n' + '\n' + d_name\
+        prod.write(''.join(start_prod) + 'ALLOWED_HOSTS = [\n' + d_name\
               + '\n' + ''.join(finish_prod))

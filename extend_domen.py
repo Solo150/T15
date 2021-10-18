@@ -70,7 +70,7 @@ with open(BASE_PATH + r'/templates/template.txt', 'r') as nginx_temp:
     result2 = re.sub(r'name_host', d_name2, result)
 
 with open(NGINX_PATH + r'/default', 'w') as conf_file:
-    conf_file.write(''.join(start_path) + result\
+    conf_file.write(''.join(start_path) + result2\
                      + '\n' + finish_row + ''.join(finish_path))
 
 os.system('systemctl start nginx.service')

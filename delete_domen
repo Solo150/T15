@@ -1,0 +1,14 @@
+#!/bin/bash
+
+read -p " Введите название проекта: " proj
+read -p " Введите название домена: " domen
+
+if [[ "$proj" =~ ^[nN]$ || "$domen" =~ ^[nN]$ ]]; then
+       echo " Выход "
+       exit
+else
+
+sed -i "/$domen/d" /opt/projects/$proj/$proj/$proj/settings/dev.py
+sed -i "/$domen/d" /opt/projects/$proj/$proj/$proj/settings/prod.py
+
+fi

@@ -11,6 +11,6 @@ else
 sed -i "/$domen/d" /opt/projects/$proj/$proj/$proj/settings/dev.py
 sed -i "/$domen/d" /opt/projects/$proj/$proj/$proj/settings/prod.py
 
-sed -i "/${proj}1${domen}1/, /${proj}2${domen}2/d"
+sed -i "/${proj}1${domen}1/, /${proj}2${domen}2/d" /etc/nginx/sites-enabled/default
 
 fi

@@ -17,9 +17,9 @@ mkdir /etc/uwsgi
 mkdir /etc/uwsgi/vassals
 mkdir /var/log/uwsgi
 
-command_psql="psql -c \"create user evgen;\""
+command_psql="psql -c \"create user evgen with password 'qwerty';\""
 su - postgres -c "$command_psql"
 
-cat temp_default.txt > /etc/nginx/sites-enabled/default
+cat templates/temp_default.txt > /etc/nginx/sites-enabled/default
 
 echo "colorscheme blue" > ~/vimrc

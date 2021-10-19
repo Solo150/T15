@@ -61,7 +61,7 @@ if [[ "$REPLY" =~ ^[0-6]$ ]]; then
         fi
         if [[ "$REPLY" == 2 ]]; then
                 spisok
-                ./delete_project
+                python3 delete_project.py
                 continue
         fi
         if [[ "$REPLY" == 3 ]]; then

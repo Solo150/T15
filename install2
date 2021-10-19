@@ -65,6 +65,15 @@ command_psql="psql -c \"create database $proj owner 'evgen';\""
 su - postgres -c "$command_psql"
 python $BASE_DIR/base_repack.py $proj
 
+# Миграция 
+
+cd /opt/projects/$proj
+source bin/activate
+cd $proj
+python manage.py makemigrations
+python manage.py migrate
+cd $BASE_DIR
+
 systemctl restart emperor.uwsgi.service
 systemctl restart nginx.service
 fi

@@ -1,4 +1,4 @@
-import re, os, sys
+import re, sys
 
 p_name = sys.argv[1]
 URLS_PATH = f'/opt/projects/{p_name}/{p_name}/{p_name}'

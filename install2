@@ -66,6 +66,10 @@ command_psql="psql -c \"create database $proj owner 'evgen';\""
 su - postgres -c "$command_psql"
 python $BASE_DIR/base_repack.py $proj
 
+# Смена урла админки
+
+python enter12_setup.py $proj
+
 # Миграция 
 
 cd /opt/projects/$proj

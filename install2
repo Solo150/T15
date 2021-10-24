@@ -38,6 +38,8 @@ cp $BASE_DIR/clear/clear/website/static/website/css/genstyle.css /opt/projects/$
 cp $BASE_DIR/clear/clear/website/static/website/css/scroll_style.css /opt/projects/$proj/$proj/website/static/website/css/.
 cp $BASE_DIR/clear/clear/website/static/website/css/choise_style.css /opt/projects/$proj/$proj/website/static/website/css/.
 cp -r $BASE_DIR/clear/lib/python3.8/site-packages/coderedcms/templates /opt/projects/$proj/lib/python3.8/site-packages/coderedcms/.
+
+cp $BASE_DIR/Full_install/wagtailsettings_models.py /opt/projects/$proj/lib/python3.8/site-packages/coderedcms/models/.
 python manage.py collectstatic
 
 cd $BASE_DIR

@@ -72,6 +72,10 @@ python $BASE_DIR/base_repack.py $proj
 
 python enter12_setup.py $proj
 
+# Удаление django-admin из urls.py
+
+sed -i "/django-admin/d" /opt/projects/$proj/$proj/$proj/urls.py
+
 # Миграция 
 
 cd /opt/projects/$proj

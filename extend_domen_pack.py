@@ -18,7 +18,7 @@ prod_result = []
 start_path = []
 results = []
 
-os.system('touch' + BASE_PATH + f'/domens/{p_name}_domens_app.txt')
+os.system('touch ' + BASE_PATH + f'/domens/{p_name}_domens_app.txt')
 
 with open(BASE_PATH + f'/domens/{p_name}_domens_app.txt', 'w') as dom:
     dom.write(text)

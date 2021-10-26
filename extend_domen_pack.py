@@ -1,7 +1,6 @@
 import os, re
 
 p_name = input("Введите название проекта: ")
-d_name2 = input("Введите название домена: ")
 
 SETTINGS_PATH = f'/opt/projects/{p_name}/{p_name}/{p_name}/settings'
 NGINX_PATH = '/etc/nginx/sites-enabled'

@@ -18,6 +18,8 @@ prod_result = []
 start_path = []
 results = []
 
+os.system('touch' + BASE_PATH + f'/domens/{p_name}_domens_app.txt')
+
 with open(BASE_PATH + f'/domens/{p_name}_domens_app.txt', 'w') as dom:
     dom.write(text)
 
@@ -97,6 +99,7 @@ with open(NGINX_PATH + r'/default', 'r') as conf_file:
 with open(NGINX_PATH + r'/default', 'w') as conf_file:
     conf_file.write(''.join(start_path) + ''.join(results)\
                      + '\n' + finish_row + ''.join(finish_path))
+
 
 os.system('systemctl start nginx.service')
 

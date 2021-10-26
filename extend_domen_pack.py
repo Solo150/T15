@@ -81,7 +81,6 @@ with open(SETTINGS_PATH + '/prod.py', 'w') as prod:
 os.system('systemctl stop nginx.service')
 
 with open(NGINX_PATH + r'/default', 'r') as conf_file:
-    domens = domens.readlines()
     finish_row = conf_file.readline()
     while finish_row != '# block_base_conf_finish\n':
         start_path.append(finish_row)

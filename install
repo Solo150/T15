@@ -4,10 +4,10 @@ spisok() {
 
         echo -en "\033[36m
         --- Список установленных проектов ---
-        "
+"
         for var in $(ls /opt/projects); do
                 if [[ "$var" != "clear" ]] && [[ "$var" != "cre_prod" ]]; then
-                        echo "${n}. $var "
+                        echo "          ${n}. $var "
                         n=$(($n + 1))
                 fi
         done
@@ -15,7 +15,7 @@ spisok() {
         \033[0m
         "
         else
-        echo "\033[31m
+        echo -en "\033[31m
          Проекты не установлены.
          \033[0m
         "

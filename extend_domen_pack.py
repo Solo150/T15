@@ -2,6 +2,9 @@ import os, re
 
 p_name = input("Введите название проекта: ")
 
+if p_name == "n":
+    exit()
+
 SETTINGS_PATH = f'/opt/projects/{p_name}/{p_name}/{p_name}/settings'
 NGINX_PATH = '/etc/nginx/sites-enabled'
 BASE_PATH = os.getcwd()

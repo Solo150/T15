@@ -99,7 +99,7 @@ with open(NGINX_PATH + r'/default', 'w') as conf_file:
                      + '\n' + finish_row + ''.join(finish_path))
 
 with open(BASE_PATH + f'/domens/{p_name}_domens.txt', 'a') as orig_domens:
-    orig_domens.write('\n'.join(domens))
+    orig_domens.write(''.join(domens))
 
 os.system('rm ' + BASE_PATH + f'/domens/{p_name}_domens_app.txt')
 

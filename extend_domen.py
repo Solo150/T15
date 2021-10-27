@@ -73,4 +73,7 @@ with open(NGINX_PATH + r'/default', 'w') as conf_file:
     conf_file.write(''.join(start_path) + result2\
                      + '\n' + finish_row + ''.join(finish_path))
 
+with open(BASE_PATH + f'/domens/{p_name}_domens.txt', 'a') as orig_domens:
+    orig_domens.write(d_name2)
+
 os.system('systemctl start nginx.service')

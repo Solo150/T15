@@ -46,6 +46,7 @@ echo -en "
 4. Установить SSL сертификат
 5. Добавть домен к проекту
 6. Удалить домен из проекта
+7. Добавить домены пачкой
 
 0. Выйти
 \033[0m
@@ -54,7 +55,7 @@ echo -en "\033[34m"
 read -p " Введите номер выбранной команды: "
 echo -en "\033[0m"
 
-if [[ "$REPLY" =~ ^[0-6]$ ]]; then
+if [[ "$REPLY" =~ ^[0-7]$ ]]; then
         if [[ "$REPLY" =~ 1 ]]; then
                 ./install2
                 continue
@@ -88,6 +89,10 @@ if [[ "$REPLY" =~ ^[0-6]$ ]]; then
                 ./delete_domen
                 systemctl restart emperor.uwsgi.service
                 systemctl restart nginx.service
+                continue
+        fi
+        if [[ "$REPLY" == 7 ]]; then
+                python3 extend_domen_pack.py
                 continue
         fi
         if [[ "$REPLY" == 0 ]]; then

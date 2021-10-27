@@ -8,6 +8,15 @@ if [[ "$proj" =~ ^[nN]$ || "$domen" =~ ^[nN]$ ]]; then
        exit
 else
 
+echo -en "\033[36m
+--- Список установленных доменов на проекте $proj ---
+        "
+cat /opt/Install/install-2.0/domens/${proj}_domens.txt
+
+echo -en "
+\033[0m
+        "
+
 sed -i "/$domen/d" /opt/projects/$proj/$proj/$proj/settings/dev.py
 sed -i "/$domen/d" /opt/projects/$proj/$proj/$proj/settings/prod.py
 sed -i "/$domen/d" /opt/Install/install-2.0/domens/${proj}_domens.txt

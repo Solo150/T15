@@ -27,12 +27,14 @@ from wagtail.admin.edit_handlers import (
 from wagtail.core.fields import StreamField
 from wagtail.search import index
 from .blocks import (NewModalBlock, Answer, CardBlockScroll,
-                     TestCardBlockScroll, ReusableContentBlockMode)
+                     TestCardBlockScroll, ReusableContentBlockMode,
+                     AnswerNew)
 
 from wagtail.snippets.models import register_snippet
 
 from coderedcms.blocks.content_blocks import (  # noqa
-    CardBlock)
+    CardBlock,
+    ModalBlock)
 
 from coderedcms.blocks.layout_blocks import (
     CardGridBlock,
@@ -46,9 +48,19 @@ from wagtail.images.blocks import ImageChooserBlock
 
 # Ниже переопределяются наборы блоков для StreamField WebPage
 
-CONTENT_STREAMBLOCKS = CONTENT_STREAMBLOCKS + [
-    ('newmodal', NewModalBlock(HTML_STREAMBLOCKS)),
+NEW_CONTENT_STREAMBLOCKS = CONTENT_STREAMBLOCKS + [
     ('answer', Answer()),
+    ('answernew', AnswerNew()),
+    ('horizscroll', CardBlockScroll()),
+    ('reusablemode', ReusableContentBlockMode()),
+    ('story_embed', StoryEmbedBlock()),
+]
+
+CONTENT_STREAMBLOCKS = CONTENT_STREAMBLOCKS + [
+    ('newmodal', NewModalBlock(NEW_CONTENT_STREAMBLOCKS)),
+    ('modalbutton', ModalBlock(NEW_CONTENT_STREAMBLOCKS)),
+    ('answer', Answer()),
+    ('answernew', AnswerNew()),
     ('horizscroll', CardBlockScroll()),
     ('reusablemode', ReusableContentBlockMode()),
     ('story_embed', StoryEmbedBlock()),

@@ -74,9 +74,12 @@ python3 $BASE_DIR/base_repack.py $proj
 
 python3 enter12_setup.py $proj
 
-# Удаление django-admin из urls.py
+# Удаление django-admin из urls.py, отключение кэша и дебага
 
 sed -i "/django-admin/d" /opt/projects/$proj/$proj/$proj/urls.py
+sed -i "s/DEBUG = True/Debug = False/" /opt/projects/$proj/$proj/$proj/settings/dev.py
+sed -i "s/WAGTAIL_CACHE = False/WAGTAIL_CACHE = True/" /opt/projects/$proj/$proj/$proj/settings/dev.py
+sed -i "s/DEBUG = True/Debug = False/" /opt/projects/$project/$proj/$proj/settings/prod.py
 
 # Миграция 
 

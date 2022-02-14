@@ -82,6 +82,12 @@ sed -i "s/DEBUG = True/Debug = False/" /opt/projects/$proj/$proj/$proj/settings/
 sed -i "s/WAGTAIL_CACHE = False/WAGTAIL_CACHE = True/" /opt/projects/$proj/$proj/$proj/settings/dev.py
 sed -i "s/DEBUG = True/Debug = False/" /opt/projects/$project/$proj/$proj/settings/prod.py
 
+# Выставление русского языка в настройках
+
+sed -i "s/en-us/ru-ru/" /opt/projects/$var/$var/$var/settings/base.py
+sed -i "s/English/Russian/" /opt/projects/$var/$var/$var/settings/base.py
+sed -i "s#America/New_York#Europe/Moscow#" /opt/projects/$var/$var/$var/settings/base.py
+
 # Миграция 
 
 cd /opt/projects/$proj

@@ -22,6 +22,7 @@ cd $BASE_DIR
 mkdir /opt/projects/$proj/$proj/media
 mkdir /opt/projects/$proj/$proj/deployment
 cp $BASE_DIR/yesanswer /opt/projects/$proj/$proj/.
+chmod +x /opt/projects/$proj/$proj/yesanswer
 
 # СОЗДАНИЕ ПРИЛОЖЕНИЯ ДЛЯ КАСТОМНЫХ МОДУЛЕЙ И НАСТРОЙКА ИХ
 
@@ -34,14 +35,21 @@ cp -r $BASE_DIR/clear/clear/modwebpage/templates /opt/projects/$proj/$proj/modwe
 # НАСТРОЙКА ШАБЛОНОВ И СТИЛЕЙ СТРАНИЦ И КАСТОМНЫХ БЛОКОВ
 
 cp $BASE_DIR/clear/clear/website/templates/coderedcms/pages/base.html /opt/projects/$proj/$proj/website/templates/coderedcms/pages/.
-cp $BASE_DIR/clear/clear/website/static/website/css/genstyle.css /opt/projects/$proj/$proj/website/static/website/css/.
-cp $BASE_DIR/clear/clear/website/static/website/css/scroll_style.css /opt/projects/$proj/$proj/website/static/website/css/.
-cp $BASE_DIR/clear/clear/website/static/website/css/choise_style.css /opt/projects/$proj/$proj/website/static/website/css/.
+cp $BASE_DIR/clear/clear/website/static/website/css/* /opt/projects/$proj/$proj/website/static/website/css/.
+cp $BASE_DIR/clear/clear/website/static/website/js/* /opt/projects/$proj/$proj/website/static/website/js/.
 cp -r $BASE_DIR/clear/lib/python3.8/site-packages/coderedcms/templates /opt/projects/$proj/lib/python3.8/site-packages/coderedcms/.
 cp $BASE_DIR/clear/lib/python3.8/site-packages/coderedcms/models/snippet_models.py /opt/projects/$proj/lib/python3.8/site-packages/coderedcms/models/.
 
+sed -i "s|https://unpkg.com/swiper/swiper-bundle.css|{% static 'website/css/swiper-bundle.css' %}|" /opt/projects/$proj/$proj/website/templates/coderedcms/pages/base.html
+sed -i "s|https://unpkg.com/swiper/swiper-bundle.js|{% static 'website/js/swiper-bundle.js' %}|" /opt/projects/$proj/$proj/website/templates/coderedcms/pages/base.html
+sed -i "s|https://unpkg.com/swiper/swiper-bundle.min.css|{% static 'website/css/swiper-bundle.min.css' %}|" /opt/projects/$proj/$proj/website/templates/coderedcms/pages/base.html
+sed -i "s|https://unpkg.com/swiper/swiper-bundle.min.js|{% static 'website/js/swiper-bundle.min.js' %}|" /opt/projects/$proj/$proj/website/templates/coderedcms/pages/base.html
+sed -i "s|https://cdn.jsdelivr.net/npm/lozad/dist/lozad.min.js|{% static 'website/js/lozad.min.js' %}|" /opt/projects/$proj/$proj/website/templates/coderedcms/pages/base.html
+sed -i "s|https://cdn.ampproject.org/amp-story-player-v0.js|{% static 'website/js/amp-story-player-v0.js' %}|" /opt/projects/$proj/$proj/website/templates/coderedcms/pages/base.html
+
+
 cp $BASE_DIR/Full_install/wagtailsettings_models.py /opt/projects/$proj/lib/python3.8/site-packages/coderedcms/models/.
-python manage.py collectstatic
+/opt/projects/$proj/$proj/yesanswer
 
 deactivate
 

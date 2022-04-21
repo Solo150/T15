@@ -39,6 +39,7 @@ cp $BASE_DIR/clear/clear/website/static/website/css/* /opt/projects/$proj/$proj/
 cp $BASE_DIR/clear/clear/website/static/website/js/* /opt/projects/$proj/$proj/website/static/website/js/.
 cp -r $BASE_DIR/clear/lib/python3.8/site-packages/coderedcms/templates /opt/projects/$proj/lib/python3.8/site-packages/coderedcms/.
 cp $BASE_DIR/clear/lib/python3.8/site-packages/coderedcms/models/snippet_models.py /opt/projects/$proj/lib/python3.8/site-packages/coderedcms/models/.
+cp $BASE_DIR/clear/lib/python3.8/site-packages/coderedcms/blocks/content_blocks.py /opt/projects/$proj/lib/python3.8/site-packages/coderedcms/blocks/.
 
 sed -i "s|https://unpkg.com/swiper/swiper-bundle.css|{% static 'website/css/swiper-bundle.css' %}|" /opt/projects/$proj/$proj/website/templates/coderedcms/pages/base.html
 sed -i "s|https://unpkg.com/swiper/swiper-bundle.js|{% static 'website/js/swiper-bundle.js' %}|" /opt/projects/$proj/$proj/website/templates/coderedcms/pages/base.html

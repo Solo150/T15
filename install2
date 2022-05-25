@@ -93,9 +93,9 @@ sed -i "s/DEBUG = True/Debug = False/" /opt/projects/$project/$proj/$proj/settin
 
 # Выставление русского языка в настройках
 
-sed -i "s/en-us/ru/" /opt/projects/$var/$var/$var/settings/base.py
-sed -i "s/English/Russian/" /opt/projects/$var/$var/$var/settings/base.py
-sed -i "s#America/New_York#Europe/Moscow#" /opt/projects/$var/$var/$var/settings/base.py
+sed -i "s/en-us/ru/" /opt/projects/$proj/$proj/$proj/settings/base.py
+sed -i "s/English/Russian/" /opt/projects/$proj/$proj/$proj/settings/base.py
+sed -i "s#America/New_York#Europe/Moscow#" /opt/projects/$proj/$proj/$proj/settings/base.py
 
 # Миграция 
 

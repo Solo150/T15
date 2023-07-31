@@ -1,0 +1,26 @@
+#!/bin/bash
+
+read -p " Введите название проекта: " proj
+read -p " Введите название домена: " domen
+
+if [[ "$proj" =~ ^[nN]$ || "$domen" =~ ^[nN]$ ]]; then
+       echo " Выход "
+       exit
+else
+
+echo -en "\033[36m
+--- Список установленных доменов на проекте $proj ---
+        "
+cat /opt/Install/install-2.0/domens/${proj}_domens.txt
+
+echo -en "
+\033[0m
+        "
+
+sed -i "/$domen/d" /opt/projects/$proj/$proj/$proj/settings/dev.py
+sed -i "/$domen/d" /opt/projects/$proj/$proj/$proj/settings/prod.py
+sed -i "/$domen/d" /opt/Install/install-2.0/domens/${proj}_domens.txt
+
+sed -i "/${proj}1${domen}1/, /${proj}2${domen}2/d" /etc/nginx/sites-enabled/default
+
+fi

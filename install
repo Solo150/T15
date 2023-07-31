@@ -1,0 +1,110 @@
+spisok() {
+        n=1
+        if [[ $(ls /opt/projects) ]]; then
+
+        echo -en "\033[36m
+        --- Список установленных проектов ---
+"
+        for var in $(ls /opt/projects); do
+                if [[ "$var" != "clear" ]] && [[ "$var" != "cre_prod" ]]; then
+                        echo "          ${n}. $var "
+                        n=$(($n + 1))
+                fi
+        done
+        echo -en "
+        \033[0m
+        "
+        else
+        echo -en "\033[31m
+         Проекты не установлены.
+         \033[0m
+        "
+        fi
+}
+
+password() {
+        cd /opt/projects/$1
+        source bin/activate
+        cd $1
+        python manage.py createsuperuser
+        deactivate
+        cd /opt
+}
+
+BASE_DIR=$(pwd)
+while true; do
+
+        cd $BASE_DIR
+        spisok
+echo -en "
+\033[33m
+Выберите команду:
+
+1. Установить проект
+2. Удалить проект
+3. Установить пароль суперпользователя
+4. Установить SSL сертификат
+5. Добавть домен к проекту
+6. Удалить домен из проекта
+7. Добавить домены пачкой
+
+0. Выйти
+\033[0m
+"
+echo -en "\033[34m"
+read -p " Введите номер выбранной команды: "
+echo -en "\033[0m"
+
+if [[ "$REPLY" =~ ^[0-7]$ ]]; then
+        if [[ "$REPLY" =~ 1 ]]; then
+                ./install2
+                continue
+        fi
+        if [[ "$REPLY" == 2 ]]; then
+                spisok
+                ./delete_project
+                continue
+        fi
+        if [[ "$REPLY" == 3 ]]; then
+                read -p "Введите название проекта(для выхода 'n'): " proj
+                if [[ "$proj" != "n" ]]; then
+                        password $proj
+                        systemctl restart emperor.uwsgi.service
+                        systemctl restart nginx.service
+                else
+                        continue
+                fi
+        fi
+        if [[ "$REPLY" == 4 ]]; then
+                certbot --nginx
+                systemctl restart emperor.uwsgi.service
+                systemctl restart nginx.service
+                continue
+        fi
+        if [[ "$REPLY" == 5 ]]; then
+                python3 extend_domen.py
+                continue
+        fi
+        if [[ "$REPLY" == 6 ]]; then
+                ./delete_domen
+                systemctl restart emperor.uwsgi.service
+                systemctl restart nginx.service
+                continue
+        fi
+        if [[ "$REPLY" == 7 ]]; then
+                python3 extend_domen_pack.py
+                continue
+        fi
+        if [[ "$REPLY" == 0 ]]; then
+                break
+        fi
+else
+        echo -en "\033[31mНеверный ввод.\033[0m" >&2
+        continue
+fi
+done
+echo -en " \033[31mПрограмма закрыта\033[0m
+"
+
+
+

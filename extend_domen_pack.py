@@ -1,18 +1,39 @@
-import re, os, sys
+import os, re
 
-p_name = sys.argv[1]
+p_name = input("Введите название проекта: ")
+
+if p_name == "n":
+    exit()
+
 SETTINGS_PATH = f'/opt/projects/{p_name}/{p_name}/{p_name}/settings'
+NGINX_PATH = '/etc/nginx/sites-enabled'
 BASE_PATH = os.getcwd()
 TEMP1 = 'ALLOWED_HOSTS = [\'*\']'
 TEMP2 = 'ALLOWED_HOSTS = ['
 TEMP3 = 'ALLOWED_HOSTS = [\'localhost\']'
+text = f"# Впишите ниже необходимые домены для установки в {p_name}-проект"
 
 start_dev = []
 start_prod = []
 dev_result = []
 prod_result = []
+start_path = []
+results = []
 
-with open(BASE_PATH + f'/domens/{p_name}_domens.txt', 'r') as domens_txt:
+os.system('touch ' + BASE_PATH + f'/domens/{p_name}_domens_app.txt')
+
+with open(BASE_PATH + f'/domens/{p_name}_domens_app.txt', 'w') as dom:
+    dom.write(text)
+
+os.system('nano ' + BASE_PATH + f'/domens/{p_name}_domens_app.txt')
+
+with open(BASE_PATH + f'/domens/{p_name}_domens_app.txt', 'r') as domens:
+	domens = domens.readlines()
+
+with open(BASE_PATH + f'/domens/{p_name}_domens_app.txt', 'w') as domens_w:
+	domens_w.writelines(domens[1:])
+
+with open(BASE_PATH + f'/domens/{p_name}_domens_app.txt', 'r') as domens_txt:
     domens = domens_txt.readlines()
 
 # СОСТАВЛЕНИЕ ЧАСТЕЙ dev.py + домены
@@ -58,3 +79,33 @@ with open(SETTINGS_PATH + '/prod.py', 'w') as prod:
     elif allow_host_prod.strip() == TEMP2:
         prod.write(''.join(start_prod) + 'ALLOWED_HOSTS = [\n' + '\n'.join(prod_result)\
               + '\n' + ''.join(finish_prod))
+
+os.system('systemctl stop nginx.service')
+
+with open(NGINX_PATH + r'/default', 'r') as conf_file:
+    finish_row = conf_file.readline()
+    while finish_row != '# block_base_conf_finish\n':
+        start_path.append(finish_row)
+        finish_row = conf_file.readline()
+    finish_path = conf_file.readlines()
+
+    with open(BASE_PATH + r'/templates/template.txt', 'r') as nginx_temp:
+        nginx_temp = nginx_temp.read()
+        for domen in domens:
+            domen = domen.strip()
+            result = re.sub(r'project_name', p_name, nginx_temp)
+            result2 = re.sub(r'name_host', domen, result)
+            results.append(result2 + '\n')
+
+with open(NGINX_PATH + r'/default', 'w') as conf_file:
+    conf_file.write(''.join(start_path) + ''.join(results)\
+                     + '\n' + finish_row + ''.join(finish_path))
+
+with open(BASE_PATH + f'/domens/{p_name}_domens.txt', 'a') as orig_domens:
+    orig_domens.write(''.join(domens))
+
+os.system('rm ' + BASE_PATH + f'/domens/{p_name}_domens_app.txt')
+
+os.system('systemctl start nginx.service')
+
+

@@ -1,5 +1,5 @@
 from coderedcms.blocks.base_blocks import BaseBlock, BaseLayoutBlock
-from coderedcms.blocks.content_blocks import CardBlock
+from coderedcms.blocks.content_blocks import CardBlock, ModalBlock
 from wagtail.core import blocks
 from wagtail.images.blocks import ImageChooserBlock
 from wagtail.snippets.blocks import SnippetChooserBlock
@@ -26,9 +26,31 @@ class Answer(BaseBlock):
      A component of information with image, text, and buttons.
      """
 
+class AnswerNew(BaseBlock):
+     
+     body = blocks.StreamBlock([
+         ('choiseandanswer', blocks.StructBlock([
+             ('choise', blocks.RichTextBlock()),
+             ('answer', blocks.StreamBlock([
+                 ('answer', blocks.RichTextBlock()),
+                 ('Card', CardBlock(required=False)),
+                 ('Button', ButtonBlock(required=False)),
+                 ('Modal', ModalBlock(HTML_STREAMBLOCKS,required=False)),
+                 ('HTML', blocks.RawHTMLBlock(required=False)),
+             ], label="Answer content")),
+         ]))
+     ])
+
+     class Meta:
+         template = 'choiseblock/choiseblock.html'
+
+     """
+     A component of information with image, text, and buttons.
+     """
 
 CONTENT_STREAMBLOCKS = CONTENT_STREAMBLOCKS + [
     ('answer', Answer()),
+    ('newanswer', AnswerNew()),
     ('story_embed', StoryEmbedBlock()),
 ]
 

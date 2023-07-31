@@ -5,16 +5,19 @@
 {# Add your custom CSS here #}
 <link rel="stylesheet" type="text/css" href="{% static 'website/css/genstyle.css' %}">
 <link rel="stylesheet" type="text/css" href="{% static 'website/css/custom.css' %}">
-<link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.css" />
-<link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+<link rel="stylesheet" href="{% static 'website/css/swiper-bundle.css' %}" />
+<link rel="stylesheet" href="{% static 'website/css/swiper-bundle.min.css' %}" />
+{% if self.custom_css %}
+	<link rel="stylesheet" href="{% static 'website/css' %}/{{ self.custom_css }}.css" />
+{% endif %}
 {% endblock %}
 
 {% block custom_scripts %}
 {# Add your custom JavaScript here, or delete the line below if you don't need any #}
 <script type="text/javascript" src="{% static 'website/js/custom.js' %}"></script>
-<script src="https://unpkg.com/swiper/swiper-bundle.js"></script>
-<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lozad/dist/lozad.min.js"></script>
+<script src="{% static 'website/js/swiper-bundle.js' %}"></script>
+<script src="{% static 'website/js/swiper-bundle.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'website/js/lozad.min.js' %}"></script>
 <script>
   const observer = lozad('.lazy');
   observer.observe();

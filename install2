@@ -22,6 +22,7 @@ cd $BASE_DIR
 mkdir /opt/projects/$proj/$proj/media
 mkdir /opt/projects/$proj/$proj/deployment
 cp $BASE_DIR/yesanswer /opt/projects/$proj/$proj/.
+chmod +x /opt/projects/$proj/$proj/yesanswer
 
 # СОЗДАНИЕ ПРИЛОЖЕНИЯ ДЛЯ КАСТОМНЫХ МОДУЛЕЙ И НАСТРОЙКА ИХ
 
@@ -34,31 +35,79 @@ cp -r $BASE_DIR/clear/clear/modwebpage/templates /opt/projects/$proj/$proj/modwe
 # НАСТРОЙКА ШАБЛОНОВ И СТИЛЕЙ СТРАНИЦ И КАСТОМНЫХ БЛОКОВ
 
 cp $BASE_DIR/clear/clear/website/templates/coderedcms/pages/base.html /opt/projects/$proj/$proj/website/templates/coderedcms/pages/.
-cp $BASE_DIR/clear/clear/website/static/website/css/genstyle.css /opt/projects/$proj/$proj/website/static/website/css/.
-cp $BASE_DIR/clear/clear/website/static/website/css/scroll_style.css /opt/projects/$proj/$proj/website/static/website/css/.
-cp $BASE_DIR/clear/clear/website/static/website/css/choise_style.css /opt/projects/$proj/$proj/website/static/website/css/.
+cp $BASE_DIR/clear/clear/website/static/website/css/* /opt/projects/$proj/$proj/website/static/website/css/.
+cp $BASE_DIR/clear/clear/website/static/website/js/* /opt/projects/$proj/$proj/website/static/website/js/.
 cp -r $BASE_DIR/clear/lib/python3.8/site-packages/coderedcms/templates /opt/projects/$proj/lib/python3.8/site-packages/coderedcms/.
-python manage.py collectstatic
+cp $BASE_DIR/clear/lib/python3.8/site-packages/coderedcms/models/snippet_models.py /opt/projects/$proj/lib/python3.8/site-packages/coderedcms/models/.
+cp $BASE_DIR/clear/lib/python3.8/site-packages/coderedcms/blocks/content_blocks.py /opt/projects/$proj/lib/python3.8/site-packages/coderedcms/blocks/.
+cp $BASE_DIR/clear/lib/python3.8/site-packages/coderedcms/models/page_models.py /opt/projects/$proj/lib/python3.8/site-packages/coderedcms/models/.
+
+sed -i "s|https://unpkg.com/swiper/swiper-bundle.css|{% static 'website/css/swiper-bundle.css' %}|" /opt/projects/$proj/$proj/website/templates/coderedcms/pages/base.html
+sed -i "s|https://unpkg.com/swiper/swiper-bundle.js|{% static 'website/js/swiper-bundle.js' %}|" /opt/projects/$proj/$proj/website/templates/coderedcms/pages/base.html
+sed -i "s|https://unpkg.com/swiper/swiper-bundle.min.css|{% static 'website/css/swiper-bundle.min.css' %}|" /opt/projects/$proj/$proj/website/templates/coderedcms/pages/base.html
+sed -i "s|https://unpkg.com/swiper/swiper-bundle.min.js|{% static 'website/js/swiper-bundle.min.js' %}|" /opt/projects/$proj/$proj/website/templates/coderedcms/pages/base.html
+sed -i "s|https://cdn.jsdelivr.net/npm/lozad/dist/lozad.min.js|{% static 'website/js/lozad.min.js' %}|" /opt/projects/$proj/$proj/website/templates/coderedcms/pages/base.html
+sed -i "s|https://cdn.ampproject.org/amp-story-player-v0.js|{% static 'website/js/amp-story-player-v0.js' %}|" /opt/projects/$proj/$proj/website/templates/coderedcms/pages/base.html
+
+cp $BASE_DIR/Full_install/wagtailsettings_models.py /opt/projects/$proj/lib/python3.8/site-packages/coderedcms/models/.
+/opt/projects/$proj/$proj/yesanswer
+
+deactivate
 
 cd $BASE_DIR
+mkdir domens
+echo "\# Впишите ниже необходимые домены для установки в ${proj}-проект" > domens/${proj}_domens.txt
+nano domens/${proj}_domens.txt
+python3 rm_first_line.py $proj
 
 # НАСТРОЙКА UWSGI-vassals ПРОЕКТА
 
-cp $BASE_DIR/clear/clear/deployment/uwsgi_params /opt/projects/$proj/$proj/deployment/.
-python $BASE_DIR/uwsgi_settings.py $proj
+cp $BASE_DIR/uwsgi_params /opt/projects/$proj/$proj/deployment/.
+python3 $BASE_DIR/uwsgi_settings.py $proj
+touch /var/log/uwsgi/${proj}.log
 
 # НАСТРОЙКА ALLOWED_HOSTS
 
-python $BASE_DIR/allowed.py $proj
+python3 $BASE_DIR/allowed.py $proj
 
 # НАСТРОЙКА NGINX
 
-python $BASE_DIR/nginx_repack.py $proj
+python3 $BASE_DIR/nginx_repack.py $proj
 
 # СОЗДАНИЕ БАЗЫ ДАННЫХ И ПРИВЯЗКА ЕЕ К ПРОЕКТУ
 
 command_psql="psql -c \"create database $proj owner 'evgen';\""
 su - postgres -c "$command_psql"
-python $BASE_DIR/base_repack.py $proj
+python3 $BASE_DIR/base_repack.py $proj
 
+# Смена урла админки
+
+python3 enter12_setup.py $proj
+
+# Удаление django-admin из urls.py, отключение кэша и дебага
+
+sed -i "/django-admin/d" /opt/projects/$proj/$proj/$proj/urls.py
+sed -i "s/DEBUG = True/Debug = False/" /opt/projects/$proj/$proj/$proj/settings/dev.py
+sed -i "s/WAGTAIL_CACHE = False/WAGTAIL_CACHE = True/" /opt/projects/$proj/$proj/$proj/settings/dev.py
+sed -i "s/DEBUG = True/Debug = False/" /opt/projects/$project/$proj/$proj/settings/prod.py
+
+# Выставление русского языка в настройках
+
+sed -i "s/en-us/ru/" /opt/projects/$proj/$proj/$proj/settings/base.py
+sed -i "s/English/Russian/" /opt/projects/$proj/$proj/$proj/settings/base.py
+sed -i "s#America/New_York#Europe/Moscow#" /opt/projects/$proj/$proj/$proj/settings/base.py
+
+# Миграция 
+
+cd /opt/projects/$proj
+source bin/activate
+cd $proj
+python manage.py makemigrations
+python manage.py migrate
+cd $BASE_DIR
+
+deactivate
+
+systemctl restart emperor.uwsgi.service
+systemctl restart nginx.service
 fi

@@ -123,7 +123,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'temp_name_db',
-        'USER': 'evgen1',
+        'USER': 'evgen',
         'PASSWORD': 'qwerty',
         'HOST': 'localhost',
         'PORT': '',
